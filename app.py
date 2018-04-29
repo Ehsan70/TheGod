@@ -47,8 +47,13 @@ def success(msg):
 @app.route('/pushmsg', methods=['POST', 'GET'])
 def pushmsg():
     if request.method == 'POST':
-        user = request.form['nm']
-        return redirect(url_for('success', name=user))
+        msg = request.form['formmsg']
+        # todo make sure the message is not null
+        msgdata = {
+            "body": msg
+        }
+        results = db.child('messages').push(msgdata)
+        return redirect(url_for('success', msg=msg))
     else:
         user = request.args.get('nm')
         return redirect(url_for('success', name=user))
@@ -57,8 +62,16 @@ def pushmsg():
 
 @app.route('/messages')
 def getmsgs():
-   dict = {'phy':50,'che':60,'maths':70}
-   return render_template('messages.html', result = dict)
+    msgs = db.child('messages').get()
+    print(msgs.key())
+    print(msgs.val())
+    listmsgs = []
+    for item in msgs.each():
+        print(item.key())
+        print(item.val())
+
+        listmsgs.append(item.val()['body'])
+    return str(listmsgs)
 
 
 if __name__ == '__main__':
