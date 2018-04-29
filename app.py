@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template
+from flask import request, redirect, url_for
 from config import Config
 import pyrebase
 
@@ -44,6 +45,21 @@ def push_msg(msg):
     }
     results = db.child('messages').push(msgdata)
     return 'Message is {}. result is {}!'.format(msg, results)
+
+
+@app.route('/success/<name>')
+def success(name):
+   return 'God heard a voice saying %s' % name
+
+
+@app.route('/login',methods = ['POST', 'GET'])
+def login():
+   if request.method == 'POST':
+      user = request.form['nm']
+      return redirect(url_for('success',name = user))
+   else:
+      user = request.args.get('nm')
+      return redirect(url_for('success',name = user))
 
 
 @app.route('/fb')
