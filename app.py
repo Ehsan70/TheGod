@@ -36,33 +36,14 @@ def hello_world():
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)
 
-
-@app.route('/sendmsg/<msg>')
-def send_msg(msg):
-    data = {"body": msg}
-
-    db.child("message").child("Morty").set(data)
-    return 'Message is %s!' % msg
-
-
-@app.route('/user/<usr>/pushmsg/<msg>')
-def push_msg(usr, msg):
+@app.route('/pushmsg/<msg>')
+def push_msg(msg):
     # todo make sure the message is not null
-    # todo make sure the user is not null
-
     msgdata = {
-        "body": msg,
-        "writer": usr
+        "body": msg
     }
     results = db.child('messages').push(msgdata)
-
-    usrdata = {
-        "username": usr,
-        "messages": results
-    }
-    db.child('users').push(usrdata)
-
-    return '{} Message is {}. result is {}!'.format(usr, msg, results)
+    return 'Message is {}. result is {}!'.format(msg, results)
 
 
 @app.route('/fb')
