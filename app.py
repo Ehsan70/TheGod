@@ -19,6 +19,7 @@ db = firebase.database()
 app = Flask(__name__)
 app.config.from_object(Config)
 
+
 # todo remove pyrebase
 
 @app.route('/')
@@ -37,29 +38,20 @@ def hello_world():
     ]
     return render_template('index.html', title='Home', user=user, posts=posts)
 
-@app.route('/pushmsg/<msg>')
-def push_msg(msg):
-    # todo make sure the message is not null
-    msgdata = {
-        "body": msg
-    }
-    results = db.child('messages').push(msgdata)
-    return 'Message is {}. result is {}!'.format(msg, results)
+
+@app.route('/success/<msg>')
+def success(msg):
+    return 'God heard you voice saying %s' % msg
 
 
-@app.route('/success/<name>')
-def success(name):
-   return 'God heard a voice saying %s' % name
-
-
-@app.route('/login',methods = ['POST', 'GET'])
+@app.route('/pushmsg', methods=['POST', 'GET'])
 def login():
-   if request.method == 'POST':
-      user = request.form['nm']
-      return redirect(url_for('success',name = user))
-   else:
-      user = request.args.get('nm')
-      return redirect(url_for('success',name = user))
+    if request.method == 'POST':
+        user = request.form['nm']
+        return redirect(url_for('success', name=user))
+    else:
+        user = request.args.get('nm')
+        return redirect(url_for('success', name=user))
 
 
 @app.route('/fb')
@@ -67,6 +59,7 @@ def firebase():
     data = {"name": "Ehsa did this"}
     db.child("users").child("Morty").set(data)
     return "hi ehsan 222"
+
 
 if __name__ == '__main__':
     app.run()
