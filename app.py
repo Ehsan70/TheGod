@@ -45,7 +45,7 @@ def success(msg):
 
 
 @app.route('/pushmsg', methods=['POST', 'GET'])
-def login():
+def pushmsg():
     if request.method == 'POST':
         user = request.form['nm']
         return redirect(url_for('success', name=user))
@@ -54,11 +54,11 @@ def login():
         return redirect(url_for('success', name=user))
 
 
-@app.route('/fb')
-def firebase():
-    data = {"name": "Ehsa did this"}
-    db.child("users").child("Morty").set(data)
-    return "hi ehsan 222"
+
+@app.route('/messages')
+def getmsgs():
+   dict = {'phy':50,'che':60,'maths':70}
+   return render_template('messages.html', result = dict)
 
 
 if __name__ == '__main__':
