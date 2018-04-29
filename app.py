@@ -41,7 +41,7 @@ def hello_world():
 
 @app.route('/success/<msg>')
 def success(msg):
-    return 'God heard you voice saying %s' % msg
+    return render_template('success.html', msg=msg)
 
 
 @app.route('/pushmsg', methods=['POST', 'GET'])
@@ -59,19 +59,13 @@ def pushmsg():
         return redirect(url_for('success', name=user))
 
 
-
 @app.route('/messages')
 def getmsgs():
     msgs = db.child('messages').get()
-    print(msgs.key())
-    print(msgs.val())
     listmsgs = []
     for item in msgs.each():
-        print(item.key())
-        print(item.val())
-
         listmsgs.append(item.val()['body'])
-    return str(listmsgs)
+    return render_template('messages.html', msgs=listmsgs)
 
 
 if __name__ == '__main__':
