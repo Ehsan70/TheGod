@@ -3,6 +3,7 @@ from flask import render_template
 from flask import request, redirect, url_for
 from config import Config
 import pyrebase
+from logging.config import dictConfig
 
 config = {
     "apiKey": "AIzaSyCly_hMghY3hAMf8LEnbmpwvQ65uG2n_Nc",
@@ -16,8 +17,26 @@ config = {
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '%(asctime)s|%(levelname)s|%(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
 app = Flask(__name__)
 app.config.from_object(Config)
+
+if app.debug:
+    print("You are in debug mode")
 
 
 # todo remove pyrebase
@@ -53,6 +72,7 @@ def pushmsg():
             "body": msg
         }
         results = db.child('messages').push(msgdata)
+        app.logger.info('%s User said ', msg)
         return redirect(url_for('success', msg=msg))
     else:
         user = request.args.get('nm')
@@ -66,6 +86,19 @@ def getmsgs():
     for item in msgs.each():
         listmsgs.append(item.val()['body'])
     return render_template('messages.html', msgs=listmsgs)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', error=str(e))
+
+
+@app.route("/error")
+def sample_error():
+    try:
+        return render_template('dash.html', msg=1 / 0)  ## This indented
+    except Exception as e:
+        return render_template('500.html', error=str(e))
 
 
 if __name__ == '__main__':
