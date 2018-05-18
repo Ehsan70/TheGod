@@ -116,7 +116,7 @@
     const payload = {
       TableName: table,
       Item: {
-        thingid: item
+        MessageId: {S: item}
       }
     }
 
@@ -139,7 +139,7 @@
 
     Button.addClass('is-loading')
 
-    addItem(Form.TableName.value, Form.thingid.value)
+    addItem(Form.TableName.value, Form.MessageToGod.value)
       // Success!
       .then( () => {
         // Reload items in the list
@@ -149,8 +149,8 @@
           })
           // Ready UI for next submission
           .then( () => {
-            Form.thingid.value = ''
-            Form.thingid.focus()
+            Form.MessageToGod.value = ''
+            Form.MessageToGod.focus()
           })
       })
       .catch( renderError )
