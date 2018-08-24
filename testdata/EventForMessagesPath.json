@@ -1,0 +1,37 @@
+{
+    "resource": "/messages",
+    "path": "/messages",
+    "httpMethod": "GET",
+    "headers": null,
+    "queryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": null,
+    "requestContext": {
+        "path": "/messages",
+        "accountId": "906782337570",
+        "resourceId": "dusrly",
+        "stage": "test-invoke-stage",
+        "requestId": "3eddcd07-a7c1-11e8-90a4-1f81b93e4643",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "cognitoIdentityId": null,
+            "apiKey": "test-invoke-api-key",
+            "cognitoAuthenticationType": null,
+            "userArn": "arn:aws:iam::906782337570:root",
+            "apiKeyId": "test-invoke-api-key-id",
+            "userAgent": "aws-internal/3 aws-sdk-java/1.11.347 Linux/4.9.110-0.1.ac.201.71.329.metal1.x86_64 Java_HotSpot(TM)_64-Bit_Server_VM/25.172-b31 java/1.8.0_172",
+            "accountId": "906782337570",
+            "caller": "906782337570",
+            "sourceIp": "test-invoke-source-ip",
+            "accessKey": "ASIA5GIDQNIRBIDEQ5PX",
+            "cognitoAuthenticationProvider": null,
+            "user": "906782337570"
+        },
+        "resourcePath": "/messages",
+        "httpMethod": "GET",
+        "extendedRequestId": "MI58EGFIIAMFU3w=",
+        "apiId": "6pz092slz6"
+    },
+    "body": null,
+    "isBase64Encoded": false
+}

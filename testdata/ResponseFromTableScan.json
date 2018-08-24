@@ -1,0 +1,22 @@
+{
+    "Items": [{
+        "Value": "Hi From DynamoDb",
+        "MessageId": "1"
+    }],
+    "Count": 1,
+    "ScannedCount": 1,
+    "ResponseMetadata": {
+        "RequestId": "5FGPQ99BD0N8I2S0MEIV8PM79BVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "HTTPStatusCode": 200,
+        "HTTPHeaders": {
+            "server": "Server",
+            "date": "Fri, 24 Aug 2018 17:40:03 GMT",
+            "content-type": "application/x-amz-json-1.0",
+            "content-length": "95",
+            "connection": "keep-alive",
+            "x-amzn-requestid": "5FGPQ99BD0N8I2S0MEIV8PM79BVV4KQNSO5AEMVJF66Q9ASUAAJG",
+            "x-amz-crc32": "4233408451"
+        },
+        "RetryAttempts": 0
+    }
+}
