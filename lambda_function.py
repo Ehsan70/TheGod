@@ -1,43 +1,35 @@
 import boto3
 import json
+import logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
-print('Loading function')
-dynamo = boto3.client('dynamodb')
+dynamodb = boto3.resource('dynamodb')
 
-
-def respond(err, res=None):
+def result(status, message):
     return {
-        'statusCode': '400' if err else '200',
-        'body': err.message if err else json.dumps(res),
+        'statusCode': status,
+        'body': message,
         'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
         },
     }
 
 
 def lambda_handler(event, context):
-    '''Demonstrates a simple HTTP endpoint using API Gateway. You have full
-    access to the request and response payload, including headers and
-    status code.
 
-    To scan a DynamoDB table, make a GET request with the TableName as a
-    query string parameter. To put, update, or delete an item, make a POST,
-    PUT, or DELETE request respectively, passing in the payload to the
-    DynamoDB API as a JSON body.
-    '''
-    #print("Received event: " + json.dumps(event, indent=2))
+    logger.info('Received event is : {}'.format(json.dumps(event, indent=2)))
 
-    operations = {
-        'DELETE': lambda dynamo, x: dynamo.delete_item(**x),
-        'GET': lambda dynamo, x: dynamo.scan(**x),
-        'POST': lambda dynamo, x: dynamo.put_item(**x),
-        'PUT': lambda dynamo, x: dynamo.update_item(**x),
-    }
+    # todo make this an env variable using cloudformation
+    table = dynamodb.Table('GodMessages')
+    msgid = event['pathParameters']['msgid']
 
-    operation = event['httpMethod']
-    if operation in operations:
-        payload = event['queryStringParameters'] if operation == 'GET' else json.loads(event['body'])
-        return respond(None, operations[operation](dynamo, payload))
+    response = table.get_item(Key={'MessageId':str(msgid)})
+    if 'Item' in response:
+        item = response['Item']
     else:
-        return respond(ValueError('Unsupported method "{}"'.format(operation)))
+        return result(400, "Msg not found")
+
+    logger.info('Result is : {}'.format(json.dumps(item)))
+
+    return result(200, json.dumps(item))
