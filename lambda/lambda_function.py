@@ -23,6 +23,8 @@ def lambda_handler(event, context):
     if (event['resource'] == "/messages"):
         response = table.scan()
         print('Response from scan is : ' + json.dumps(response))
+        if "ResponseMetadata" in response:
+            del response["ResponseMetadata"]
         return {
             'statusCode': '200',
             'body': json.dumps(response),
