@@ -126,39 +126,48 @@
     })
   }
 
-  // Bind to DOM elements
-  const Form = $(document.getElementById('form'))
-  const Button = $(document.getElementById('button'))
-  const TheError = $(document.getElementById('error'))
-  const Items = $(document.getElementById('items'))
 
-  // Bind to form `onsubmit`
-  Form.addEventListener('submit', (e) => {
-    // Prevent default execution
-    e.preventDefault()
+  const app = document.getElementById('messages');
 
-    Button.addClass('is-loading')
 
-    addItem(Form.TableName.value, Form.MessageToGod.value)
-      // Success!
-      .then( () => {
-        // Reload items in the list
-        loadItems()
-          .then( () => {
-            Button.removeClass('is-loading')
-          })
-          // Ready UI for next submission
-          .then( () => {
-            Form.MessageToGod.value = ''
-            Form.MessageToGod.focus()
-          })
-      })
-      .catch( renderError )
+  const container = document.createElement('div');
+  container.setAttribute('class', 'container');
+  
+  app.appendChild(container);
+  
+  var request = new XMLHttpRequest();
+  request.open('GET', 'https://6pz092slz6.execute-api.us-east-1.amazonaws.com/TG-DevStage/messages', true);
+  request.onload = function () {
+    // Begin accessing JSON data here
+    var data = JSON.parse(this.response);
+    console.log("data is "+ JSON.stringify(data))
 
-    // Returning false to prevent form from submitting
-    return false
-  })
+    if (request.status >= 200 && request.status < 400) {
+      console.log("items are "+ JSON.stringify(data["Items"]))
 
-  // Initial data populate
-  loadItems()
+      data["Items"].forEach(msg => {
+        const card = document.createElement('div');
+        card.setAttribute('class', 'card');
+  
+        const h1 = document.createElement('h1');
+        h1.textContent = msg.Value;
+  
+        // const p = document.createElement('p');
+        // movie.description = movie.description.substring(0, 300);
+        // p.textContent = `${movie.description}...`;
+  
+        container.appendChild(card);
+        card.appendChild(h1);
+        //card.appendChild(p);
+      });
+    } else {
+      const errorMessage = document.createElement('marquee');
+      errorMessage.textContent = `Gah, it's not working!`;
+      app.appendChild(errorMessage);
+    }
+  }
+  
+  request.send();
+
 })({document, fetch})
+
