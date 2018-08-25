@@ -9,7 +9,8 @@ def result(status, message):
         'statusCode': status,
         'body': message,
         'headers': {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
         },
     }
 
@@ -29,7 +30,8 @@ def lambda_handler(event, context):
             'statusCode': '200',
             'body': json.dumps(response),
             'headers': {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             }
         }
     elif (event['resource'] == "/messages/{msgid}" and event['httpMethod'] == "GET"):
