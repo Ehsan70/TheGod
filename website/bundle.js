@@ -126,9 +126,7 @@
     })
   }
 
-
   const messages_div = document.getElementById('messages');
-
   var request = new XMLHttpRequest();
   // Todo make the below URL configurable
   request.open('GET', 'https://6pz092slz6.execute-api.us-east-1.amazonaws.com/TG-DevStage/messages', true);
@@ -139,8 +137,7 @@
 
     if (request.status >= 200 && request.status < 400) {
       // If success 
-      console.log("items are "+ JSON.stringify(data["Items"]))
-
+      console.log("Received messages from database are "+ JSON.stringify(data["Items"]))
       data["Items"].forEach(msg => {
         const msg_p = document.createElement('p');
         msg_p.textContent = msg.Value;
