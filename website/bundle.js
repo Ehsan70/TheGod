@@ -127,43 +127,29 @@
   }
 
 
-  const app = document.getElementById('messages');
+  const messages_div = document.getElementById('messages');
 
-
-  const container = document.createElement('div');
-  container.setAttribute('class', 'container');
-  
-  app.appendChild(container);
-  
   var request = new XMLHttpRequest();
+  // Todo make the below URL configurable
   request.open('GET', 'https://6pz092slz6.execute-api.us-east-1.amazonaws.com/TG-DevStage/messages', true);
   request.onload = function () {
     // Begin accessing JSON data here
     var data = JSON.parse(this.response);
-    console.log("data is "+ JSON.stringify(data))
+    console.log("Data from database is "+ JSON.stringify(data))
 
     if (request.status >= 200 && request.status < 400) {
+      // If success 
       console.log("items are "+ JSON.stringify(data["Items"]))
 
       data["Items"].forEach(msg => {
-        const card = document.createElement('div');
-        card.setAttribute('class', 'card');
-  
-        const h1 = document.createElement('h1');
-        h1.textContent = msg.Value;
-  
-        // const p = document.createElement('p');
-        // movie.description = movie.description.substring(0, 300);
-        // p.textContent = `${movie.description}...`;
-  
-        container.appendChild(card);
-        card.appendChild(h1);
-        //card.appendChild(p);
+        const msg_p = document.createElement('p');
+        msg_p.textContent = msg.Value;
+        messages_div.appendChild(msg_p)
       });
     } else {
       const errorMessage = document.createElement('marquee');
-      errorMessage.textContent = `Gah, it's not working!`;
-      app.appendChild(errorMessage);
+      errorMessage.textContent = `Gah, it's not working! Cannot get the messages from database.`;
+      messages_div.appendChild(errorMessage);
     }
   }
   
