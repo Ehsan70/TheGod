@@ -1,0 +1,9 @@
+version: 0.0
+resources:
+  - TG-Function:
+      type: "AWS::Lambda::Function"
+      properties:
+        name: TG-Function
+        alias: TG-F
+        currentversion: 1
+        targetversion: 2
